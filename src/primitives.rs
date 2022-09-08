@@ -1,5 +1,10 @@
+//! This module contains usefull objects.
 use super::linear::Vector;
 
+/// Sphere is the most easiest object to render.
+///
+/// Field `id` requiered to group spheres that can
+/// interact with each other.
 pub struct Sphere {
     pub radius: u32,
     pub id: u32,
@@ -14,6 +19,11 @@ impl Sphere {
             id,
         }
     }
+
+    /// Returns signed distance between to spheres.
+    ///
+    /// Object overlap if this distance less or equal
+    /// to zero.
     pub fn sdf(&self, point: &Vector<f64>) -> f64 {
         ((self.center.x - point.x).powi(2)
             + (self.center.y - point.y).powi(2)
@@ -23,6 +33,7 @@ impl Sphere {
     }
 }
 
+/// Ray object represents some vector in space.
 pub struct Ray {
     pub direction: Vector<f64>,
     pub position: Vector<f64>,
@@ -36,6 +47,9 @@ impl Ray {
         }
     }
 
+    /// Normalizes ray direction.
+    ///
+    /// **Panics if direction's vector length is equal to zero**
     pub fn normalize(&mut self) {
         self.direction = self.direction.normalize();
     }

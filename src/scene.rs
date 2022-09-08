@@ -1,7 +1,11 @@
+//! This module contains scene interactions.
 use super::linear::Vector;
 use super::primitives::{Ray, Sphere};
 use image::RgbImage;
 
+/// Camera object.
+///
+/// Curently don't have direction.
 pub struct Camera {
     position: Vector<f64>,
     resolution: [u32; 2],
@@ -31,6 +35,8 @@ impl Scene {
         }
     }
 
+    /// Iterates through all objects in scene and calculates
+    /// lowest distance to objects.
     fn distance_to_closest(&self, point: &Vector<f64>) -> (f64, u32) {
         let mut min: f64 = f64::MAX;
         let mut id: u32 = 0;
@@ -45,6 +51,7 @@ impl Scene {
         (min, id)
     }
 
+    /// Almost same as `distance_to_closest', but ignores objects from the same groupe.
     fn distance_to_closest_offset(&self, point: &Vector<f64>, offset: u32) -> (f64, u32) {
         let mut min: f64 = f64::MAX;
         let mut id: u32 = 0;
@@ -62,7 +69,12 @@ impl Scene {
         (min, id)
     }
 
+    /// Analog of vector shader.
+    ///
+    /// Generates Ray for the pixel on screen
+    /// and returns color in which coresponding pixel must be coloured.
     pub fn fragment(&self, uv: Vector<f64>) -> Vector<f64> {
+        // Vector origin is camera position.
         let ro: Vector<f64> = self.camera.position;
 
         let mut ray: Ray = Ray::new(uv, ro);
