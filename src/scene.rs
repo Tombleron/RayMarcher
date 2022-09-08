@@ -102,10 +102,8 @@ impl Scene {
     pub fn ray_march(&self, ray: &Ray) -> Vector<f64> {
         let mut total_distance: f64 = 0.0;
         let step_number: u32 = 100;
-        let min_hit_distance: f64 = 0.001;
+        let min_hit_distance: f64 = 0.101;
         let max_distance: f64 = 1000.0;
-
-        let color: Vector<f64> = Vector::new(0.0, 0.0, 0.0);
 
         for _step in 0..step_number {
             let curent_position: Vector<f64> = ray.position + (ray.direction * total_distance);
@@ -126,7 +124,14 @@ impl Scene {
 
             total_distance += distance_to_closest;
         }
-        color
+
+        let grad = (ray.direction.y + 1.0) / 2.0;
+
+        Vector {
+            x: 60.0 + 160.0 * grad,
+            y: 200.0,
+            z: 235.0,
+        } / 255.0
     }
 
     fn light_process(&self, start_position: Vector<f64>, id: u32) -> (f64, f64) {
